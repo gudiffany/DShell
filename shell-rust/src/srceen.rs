@@ -1,14 +1,18 @@
+use crate::command::Command;
 use colored::*;
 use std::io;
 use std::io::Write;
 pub struct Srceen {}
 
 impl Srceen {
-    pub fn start() -> Vec<String> {
+    pub fn start(&mut self) {
         let username = "diffany".red();
         print!("{} @ diffany-virtual-machine:~$", username);
         io::stdout().flush().expect("Failed to flush stdout");
+        self.input_command();
+    }
 
+    fn input_command(&mut self) {
         let mut command = String::new();
         io::stdin()
             .read_line(&mut command)
@@ -19,8 +23,7 @@ impl Srceen {
             .split(' ')
             .map(|part| part.to_string())
             .collect();
-
-        parts
+        let command_name = &parts[0];
+        Command::output_command(command_name.to_string(), parts)
     }
 }
-
